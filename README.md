@@ -2,6 +2,8 @@
 
 generated with chatgpt o3-mini-high
 
+This script checks for macOS updates, but filters out Sequoia.  Will modify to auto-update once I've tested it works with the next 14.x update
+
 WARNING untested
 
 ## Installation
