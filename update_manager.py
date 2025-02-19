@@ -9,7 +9,7 @@ def get_update_list():
     """
     try:
         result = subprocess.run(
-            ["softwareupdate", "-l"],
+            ["/usr/sbin/softwareupdate", "-l"],
             capture_output=True,
             text=True,
             check=True
