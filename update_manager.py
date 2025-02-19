@@ -44,13 +44,9 @@ def show_sticky_notification(title, message):
     The '-timeout 0' argument makes the notification persist until dismissed.
     FIXME the above is not true, set terminal-notifier notifications to be alerts
     """
-    if not shutil.which("terminal-notifier"):
-        print("Error: terminal-notifier is not installed. Install it with 'brew install terminal-notifier'.")
-        return
-
     try:
         subprocess.run(
-            ["terminal-notifier", "-title", title, "-message", message, "-timeout", "0"],
+            ["/opt/homebrew/bin/terminal-notifier", "-title", title, "-message", message, "-timeout", "0"],
             check=True
         )
     except subprocess.CalledProcessError as e:
