@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+
 import subprocess
 import sys
 import shutil
+
 
 def get_update_list():
     """
@@ -19,6 +21,7 @@ def get_update_list():
         sys.exit(1)
     return result.stdout
 
+
 def parse_updates(output, blocked_pattern):
     """
     Parses the output of 'softwareupdate -l' and returns a list of update labels
@@ -31,12 +34,11 @@ def parse_updates(output, blocked_pattern):
         if line.startswith("*"):
             # Remove the '*' and any extra whitespace.
             update_label = line.lstrip("* ").strip()
-            if blocked_pattern in update_label:
-                print(f"Skipping blocked update: {update_label}")
-            else:
+            if blocked_pattern not in update_label:
                 print(f"Found eligible update: {update_label}")
                 eligible_updates.append(update_label)
     return eligible_updates
+
 
 def show_sticky_notification(title, message):
     """
@@ -52,16 +54,14 @@ def show_sticky_notification(title, message):
     except subprocess.CalledProcessError as e:
         print("Error showing notification:", e)
 
+
 def main():
     # Define the blocked pattern (e.g., a major upgrade to macOS "Sequoia 15").
     BLOCKED_PATTERN = "Sequoia 15"  # Adjust this string if needed
 
-    print("Checking for available updates...")
     output = get_update_list()
 
     if "No new software available" in output:
-        print("No updates available.")
-        show_sticky_notification("Software Update Alert", "No new updates available.")
         return
 
     eligible_updates = parse_updates(output, BLOCKED_PATTERN)
@@ -70,9 +70,7 @@ def main():
         # Create a message listing the eligible updates.
         update_message = "Available update" + ("s: " if len(eligible_updates) > 1 else ": ") + ", ".join(eligible_updates)
         show_sticky_notification("Software Update Alert", update_message)
-    else:
-        print("No eligible updates found for notification.")
-        show_sticky_notification("Software Update Alert", "No eligible updates available.")
+
 
 if __name__ == "__main__":
     if not sys.platform.startswith("darwin"):
