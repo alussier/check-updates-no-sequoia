@@ -1,10 +1,12 @@
 # check-updates-no-sequoia
 
-generated with chatgpt o3-mini-high
+This script checks for macOS updates, but filters out Sequoia.
 
-This script checks for macOS updates, but filters out Sequoia.  Will modify to auto-update once I've tested it works with the next 14.x update
+> [!CAUTION]
+> generated with ChatGPT (o3-mini-high)
 
-WARNING untested
+> [!CAUTION]
+> untested until next 14.x update comes out
 
 ## Installation
 ```
