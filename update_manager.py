@@ -74,23 +74,16 @@ def main():
     # Define the blocked pattern (e.g., a major upgrade to macOS "Sequoia 15").
     BLOCKED_PATTERN = "Sequoia 15"
 
-    print('Scanning for updates...')
     output = get_update_list()
 
     if "No new software available" in output:
-        print("No new software available")
         return
 
     eligible_updates = [x.removeprefix('Label: ') for x in parse_updates(output, BLOCKED_PATTERN)]
 
     if eligible_updates:
-        # Create a message listing the eligible updates.
-        update_message = "Available updates:" + ", ".join(eligible_updates)
         show_sticky_notification("Software Update Alert", update_message)
-        print(f'Installing {eligible_updates}...')
         install_updates(eligible_updates)
-    else:
-        print(f'No eligible updates')
 
 
 if __name__ == "__main__":

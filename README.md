@@ -28,3 +28,15 @@ Subject: Re: Cron <adam@Adams-Air> /opt/homebrew/bin/python3 /Users/adam/git/che
 ? d
 ? q
 ```
+
+## Maybe download the update?
+I saw someone suggest online that downloading the full installer would stop/reduce the update prompts.
+I tried this, ended up with a 58MB "Install macOS Sequoia" in Applications?
+> [!CAUTION]
+> Not sure if helpful :)
+```
+❯ softwareupdate --fetch-full-installer --full-installer-version 15.3.2
+Scanning for 15.3.2 installer
+Install failed with error: An error occurred while running scripts from the package “InstallAssistant.pkg”.
+Error Domain=PKInstallErrorDomain Code=112 "An error occurred while running scripts from the package “InstallAssistant.pkg”." UserInfo={SUErrorUpdateTitle=macOS Sequoia, NSURL=file:///Library/Updates/082-01336/InstallAssistant.pkg, PKInstallPackageIdentifier=com.apple.pkg.InstallAssistant.macOSSequoia, NSLocalizedDescription=An error occurred while running scripts from the package “InstallAssistant.pkg”., SUErrorRelatedCode=SUErrorCodeInstallFailure, NSFilePath=./postinstall.sh, SUErrorUpdateProductKey=082-01336}
+```
