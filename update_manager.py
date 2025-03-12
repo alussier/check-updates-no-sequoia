@@ -22,6 +22,21 @@ def get_update_list():
     return result.stdout
 
 
+def install_updates(update_list):
+    """
+    Installs specified updates
+    """
+    try:
+        result = subprocess.run(
+            ["/usr/sbin/softwareupdate", "--verbose", "--no-scan", "--agree-to-license", "--install", *update_list],
+            text=True
+        )
+    except subprocess.CalledProcessError as e:
+        print("Error listing updates:", e)
+        sys.exit(1)
+    return result.stdout
+
+
 def parse_updates(output, blocked_pattern):
     """
     Parses the output of 'softwareupdate -l' and returns a list of update labels
@@ -57,19 +72,25 @@ def show_sticky_notification(title, message):
 
 def main():
     # Define the blocked pattern (e.g., a major upgrade to macOS "Sequoia 15").
-    BLOCKED_PATTERN = "Sequoia 15"  # Adjust this string if needed
+    BLOCKED_PATTERN = "Sequoia 15"
 
+    print('Scanning for updates...')
     output = get_update_list()
 
     if "No new software available" in output:
+        print("No new software available")
         return
 
-    eligible_updates = parse_updates(output, BLOCKED_PATTERN)
+    eligible_updates = [x.removeprefix('Label: ') for x in parse_updates(output, BLOCKED_PATTERN)]
 
     if eligible_updates:
         # Create a message listing the eligible updates.
-        update_message = "Available update" + ("s: " if len(eligible_updates) > 1 else ": ") + ", ".join(eligible_updates)
+        update_message = "Available updates:" + ", ".join(eligible_updates)
         show_sticky_notification("Software Update Alert", update_message)
+        print(f'Installing {eligible_updates}...')
+        install_updates(eligible_updates)
+    else:
+        print(f'No eligible updates')
 
 
 if __name__ == "__main__":
